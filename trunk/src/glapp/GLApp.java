@@ -3428,7 +3428,7 @@ public class GLApp {
     // Misc functions
     //========================================================================
     public static URL appletBaseURL = null;
-    public static Class rootClass = GLApp.class;
+    public static Class<GLApp> rootClass = GLApp.class;
 
     /**
      * Open the given file and return the InputStream.  This function assumes
@@ -3504,7 +3504,7 @@ public class GLApp {
     	int totalRead = 0;
     	int num = 0;
     	byte[] bytes = new byte[chunkSize];
-    	ArrayList byteChunks = new ArrayList();
+    	ArrayList<byte[]> byteChunks = new ArrayList<byte[]>();
 
     	// Read the bytes in chunks of 1024
     	try {
@@ -3594,8 +3594,11 @@ public class GLApp {
      *  <P>
      *  @see getInputStream()
      */
-    public void setRootClass() {
-    	rootClass = this.getClass();
+    @SuppressWarnings("unchecked")
+	public void setRootClass() {
+    	
+    	rootClass = (Class<GLApp>) this.getClass();
+    	
     }
 
     /**
@@ -3703,7 +3706,7 @@ public class GLApp {
     	Method M = null;
     	try {
     		// Look for a method with the given name and no parameters
-    		M = object.getClass().getMethod(methodName, null);
+    		M = object.getClass().getMethod(methodName,(Class<?>[])null);
     	} catch (Exception e) {
     		err("GLApp.method(): Can't find method (" +methodName+ ").  " + e);
     	}
@@ -3734,7 +3737,7 @@ public class GLApp {
     	if (object != null && method != null){
     		try {
     			// Call the method with this object as the argument!
-    			method.invoke(object, null);
+    			method.invoke(object,(Object[])null);
     		} catch (Exception e) {
     			// Error handling
     			System.err.println("GLApp.invoke(): couldn't invoke method " + method.getName() + " on object " + object.getClass().getName());
@@ -3754,7 +3757,7 @@ public class GLApp {
     	if (method != null){
     		try {
     			// Call the method with this object as the argument!
-    			method.invoke(this, null);
+    			method.invoke(this,(Object[])null);
     		} catch (Exception e) {
     			// Error handling
     			System.err.println("GLApp.invoke(): couldn't invoke method " + method.getName() + " on object " + this.getClass().getName());
