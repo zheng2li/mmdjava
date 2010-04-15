@@ -6,6 +6,8 @@ import java.awt.Frame;
 import java.awt.event.ComponentEvent;
 import java.io.*;
 import org.lwjgl.opengl.*;
+import org.lwjgl.util.glu.GLU;
+
 import jp.nyatla.nymmd.*;
 import glapp.*;
 
@@ -82,6 +84,7 @@ public class MmdTestLWJGL extends GLApp
 		}
 		catch(Exception e)
 		{
+			System.out.println("updateMotion() Error... Continuing");
 		}
 		//this._player.updateNeckBone(100.0f,10f,10f);
 		this._render.updateSkinning(this._player.refSkinningMatrix());
@@ -93,10 +96,13 @@ public class MmdTestLWJGL extends GLApp
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glPushMatrix();
 		GL11.glLoadIdentity();
-		GL11.glTranslatef(0, -10, -30);
-		GL11.glScalef(1.0f, 1.0f, 1.0f);
-
+		//GL11.glTranslatef(0, -10, -30);
 		GL11.glScalef(1.0f, 1.0f, -1.0f);
+
+		GLU.gluLookAt(
+				10*(float)Math.sin((iTime%360)/180*Math.PI),10*(float)Math.cos((iTime%360)/180*Math.PI),0,//Revolve
+				0,0,10*(float)Math.sin((iTime%360)/180*Math.PI),//Up and down
+				0,0,1);// z is up
 		this._render.render();
 		GL11.glPopMatrix();
 	}
