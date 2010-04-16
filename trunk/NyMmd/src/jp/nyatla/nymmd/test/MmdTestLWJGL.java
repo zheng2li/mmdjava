@@ -10,7 +10,11 @@ import org.lwjgl.util.glu.GLU;
 
 import jp.nyatla.nymmd.*;
 import glapp.*;
-
+/**
+ * MmdTestLWJGL uses GLApp and LWJGL to implement MmdTestGL for NyMMD
+ * @author shadofx
+ *
+ */
 public class MmdTestLWJGL extends GLApp
 {
 	private long animation_start_time;
@@ -19,6 +23,15 @@ public class MmdTestLWJGL extends GLApp
 	private MmdMotionPlayer _player;
 	public IMmdPmdRender _render;
 	private IMmdDataIo _data_io;
+	/**
+	 * Creates the MmdTestLWJGL using the model and movement definition files.
+	 * @param pmd_file 
+	 * Model File, must be .pmd and following respective guidelines
+	 * @param vmd_file
+	 * Movement File, defines bone key frames, must be .vmd
+	 * @throws FileNotFoundException
+	 * @throws MmdException
+	 */
 	public MmdTestLWJGL(File pmd_file,File vmd_file) throws FileNotFoundException,MmdException
 	{
 		super();
@@ -34,6 +47,11 @@ public class MmdTestLWJGL extends GLApp
         displayHeight = 600;
 	}
 	private long prev_time = 0;
+	/**
+	 * Creates MmdMotionPlayer, setting the appropriate pmd and vmd filestreams
+	 * Begins the animation timer
+	 * Sets up glEnables, lights
+	 */
 	public void setup()
 	{
 		// Player
@@ -73,6 +91,11 @@ public class MmdTestLWJGL extends GLApp
 		GL11.glEnable(GL11.GL_LIGHT1);
 		GL11.glEnable(GL11.GL_LIGHTING);
 	}
+	/**
+	 * Keeps track of animation time
+	 * Updates the motion
+	 * Renders the scene
+	 */
 	public void draw()
 	{
 		long iTime = System.currentTimeMillis() - this.animation_start_time;
@@ -82,7 +105,7 @@ public class MmdTestLWJGL extends GLApp
 		{
 			this._player.updateMotion(fDiffTime);
 		}
-		catch(Exception e)
+		catch(MmdException e)
 		{
 			System.out.println("updateMotion() Error... Continuing");
 		}
@@ -106,6 +129,11 @@ public class MmdTestLWJGL extends GLApp
 		this._render.render();
 		GL11.glPopMatrix();
 	}
+	/**
+	 * Makes adjustments in case the display is resized
+	 * Not Used
+	 * @param e
+	 */
 	public void componentResized(ComponentEvent e)
 	{
 		int width = e.getComponent().getWidth();
@@ -120,6 +148,11 @@ public class MmdTestLWJGL extends GLApp
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glLoadIdentity();
 	}
+	/**
+	 * Prompts for PMD and VMD file
+	 * Executes Test
+	 * @param args
+	 */
 	public static void main(String[] args)
 	{
 		Frame input = new Frame();
@@ -156,6 +189,11 @@ public class MmdTestLWJGL extends GLApp
 		return;
 	}
 }
+/**
+ * Imports files
+ * @author nyatla
+ *
+ */
 class FileIO implements IMmdDataIo
 {
 	private String _dir;
