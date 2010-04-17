@@ -1,9 +1,9 @@
 package jp.nyatla.nymmd.test;
 
 import java.nio.*;
-import java.awt.FileDialog;
-import java.awt.Frame;
+//import java.awt.Frame;
 import java.awt.event.ComponentEvent;
+//import java.awt.FileDialog;
 import java.io.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.util.glu.GLU;
@@ -23,6 +23,8 @@ public class MmdTestLWJGL extends GLApp
 	private MmdMotionPlayer _player;
 	public IMmdPmdRender _render;
 	private IMmdDataIo _data_io;
+	
+	private float rotationangle = 0;
 	/**
 	 * Creates the MmdTestLWJGL using the model and movement definition files.
 	 * @param pmd_file 
@@ -35,6 +37,10 @@ public class MmdTestLWJGL extends GLApp
 	public MmdTestLWJGL(File pmd_file,File vmd_file) throws FileNotFoundException,MmdException
 	{
 		super();
+		//fullScreen = true;
+		displayWidth = 1024;
+		displayHeight = 768;
+		
 		//PMD
 		FileInputStream fs = new FileInputStream(pmd_file);
 		this._pmd = new MmdPmdModel(fs);
@@ -101,6 +107,7 @@ public class MmdTestLWJGL extends GLApp
 		long iTime = System.currentTimeMillis() - this.animation_start_time;
 		float fDiffTime = (float) (iTime - prev_time) * (1.0f / 30.0f);
 		prev_time = iTime;
+		rotationangle+=Math.PI/150f;
 		try
 		{
 			this._player.updateMotion(fDiffTime);
@@ -119,15 +126,16 @@ public class MmdTestLWJGL extends GLApp
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glPushMatrix();
 		GL11.glLoadIdentity();
-		//GL11.glTranslatef(0, -10, -30);
+		GL11.glTranslatef(0, -10, -30);
 		GL11.glScalef(1.0f, 1.0f, -1.0f);
 
 		GLU.gluLookAt(
-				10*(float)Math.sin((iTime%360)/180*Math.PI),10*(float)Math.cos((iTime%360)/180*Math.PI),0,//Revolve
-				0,0,10*(float)Math.sin((iTime%360)/180*Math.PI),//Up and down
-				0,0,1);// z is up
+				.5f*(float)(Math.sin(rotationangle*2)),.5f*(float)(Math.cos(rotationangle)),.5f*(float)(Math.cos(rotationangle*2)),//Revolve
+				0,0,0, 0,1,0);// z is up
 		this._render.render();
 		GL11.glPopMatrix();
+		
+		if(rotationangle>2f*Math.PI)rotationangle-=2f*Math.PI;
 	}
 	/**
 	 * Makes adjustments in case the display is resized
@@ -155,6 +163,7 @@ public class MmdTestLWJGL extends GLApp
 	 */
 	public static void main(String[] args)
 	{
+		/*
 		Frame input = new Frame();
 		FileDialog fd;
 		fd=new FileDialog(input, "Select PMD file" , FileDialog.LOAD);
@@ -171,6 +180,9 @@ public class MmdTestLWJGL extends GLApp
 			System.out.println("failed:please select vmd file.");
 			input.dispose();return;
 		}
+		*/
+		String pmd_file = "Model/KAITO.pmd";
+		String vmd_file = "Motion/test.vmd";
 		try
 		{
 		MmdTestLWJGL demo = new MmdTestLWJGL(new File(pmd_file),new File(vmd_file));
