@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry excluding="glapp/" kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="NyMmd.jar" sourcepath="NyMmd.jar"/>
 	<classpathentry kind="lib" path="lwjgl-2.3/jar/AppleJavaExtensions.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="http://www.lwjgl.org/javadoc/"/>
@@ -49,5 +48,6 @@
 			<attribute name="javadoc_location" value="http://potatoland.org/code/gl/javadoc/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="/nymmd/bin"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

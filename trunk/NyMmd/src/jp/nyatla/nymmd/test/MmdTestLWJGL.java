@@ -196,7 +196,7 @@ public class MmdTestLWJGL extends GLApp
 		catch(MmdException e)
 		{
 			System.err.println("MmdException during run:");
-			System.err.println(e);
+			e.printStackTrace();
 		}
 		return;
 	}
