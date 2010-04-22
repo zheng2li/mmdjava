@@ -109,7 +109,7 @@ public class DataReader
 			ret=new String(tmp,0,len,"Shift_JIS");
 		} catch (UnsupportedEncodingException e) {
 			try {
-				ret=new String(tmp,0,len,"UTF-8");
+				ret=new String(tmp,0,len,"US-ASCII");
 			} catch (UnsupportedEncodingException e1) {
 				e1.printStackTrace();
 			}
