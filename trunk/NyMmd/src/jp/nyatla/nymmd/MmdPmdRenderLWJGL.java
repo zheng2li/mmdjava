@@ -229,11 +229,12 @@ class GLTextureListLWJGL
 			rgbwrap.put(rgb_array);
 		rgbwrap.flip();
 		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, img.getWidth(), img.getHeight(), 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, rgbwrap);
-		FloatBuffer prio = BufferUtils.createFloatBuffer(1);
+		
+		/*FloatBuffer prio = BufferUtils.createFloatBuffer(1);
 		prio.put(0, 1.0f);
 		prio.flip();
 		texid.flip();
-		GL11.glPrioritizeTextures(texid, prio);
+		GL11.glPrioritizeTextures(texid, prio);*/
 		GLTextureData ret = new GLTextureData();
 		ret.file_name = szFileName;
 		ret.gl_texture_id = gl_tex_id;
