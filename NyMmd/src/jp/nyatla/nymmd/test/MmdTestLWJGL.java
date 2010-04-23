@@ -24,7 +24,7 @@ public class MmdTestLWJGL extends GLApp
 	public IMmdPmdRender _render;
 	private IMmdDataIo _data_io;
 	
-	private float rotationangle = 0;
+	//private float rotationangle = 0;
 	/**
 	 * Creates the MmdTestLWJGL using the model and movement definition files.
 	 * @param pmd_file 
@@ -107,7 +107,7 @@ public class MmdTestLWJGL extends GLApp
 		long iTime = System.currentTimeMillis() - this.animation_start_time;
 		float fDiffTime = (float) (iTime - prev_time) * (1.0f / 30.0f);
 		prev_time = iTime;
-		rotationangle+=Math.PI/800f;
+		//rotationangle+=Math.PI/800f;
 		try
 		{
 			this._player.updateMotion(fDiffTime);
@@ -135,7 +135,7 @@ public class MmdTestLWJGL extends GLApp
 		this._render.render();
 		GL11.glPopMatrix();
 		
-		if(rotationangle>2f*Math.PI)rotationangle-=2f*Math.PI;
+		//if(rotationangle>2f*Math.PI)rotationangle-=2f*Math.PI;
 	}
 	/**
 	 * Makes adjustments in case the display is resized

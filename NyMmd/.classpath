@@ -48,6 +48,6 @@
 			<attribute name="javadoc_location" value="http://potatoland.org/code/gl/javadoc/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/nymmd/bin" sourcepath="/nymmd/src"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nymmd"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
