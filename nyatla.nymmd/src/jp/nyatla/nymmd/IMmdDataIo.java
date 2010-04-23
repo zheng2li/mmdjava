@@ -38,6 +38,9 @@ public interface IMmdDataIo
 	/**
 	 * i_nameを読みだすinputstreamを要求する。
 	 * 関数は、i_nameに対応するリソースを読みだすストリームを返すこと。
+	 * 
+	 * request i_name returns inputstream.
+	 * Function, i_name return a stream to read out the corresponding resource.
 	 * @param i_name
 	 * @return
 	 */

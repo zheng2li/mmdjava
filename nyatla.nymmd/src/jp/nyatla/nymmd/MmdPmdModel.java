@@ -54,18 +54,18 @@ class DataComparator implements java.util.Comparator<PmdIK>
 
 public class MmdPmdModel
 {
-	private String _name;	// モデル名
-	private int _number_of_vertex;	// 頂点数
+	private String _name;	// モデル名/Model name
+	private int _number_of_vertex;	// 頂点数/Vertices
 	
-	private PmdFace[] m_pFaceArray; // 表情配列
-	private PmdBone[] m_pBoneArray; // ボーン配列
-	private PmdIK[] m_pIKArray;    // IK配列
+	private PmdFace[] m_pFaceArray; // 表情配列/Expression arrays
+	private PmdBone[] m_pBoneArray; // ボーン配列/Bone array
+	private PmdIK[] m_pIKArray;    // IK配列/IK array
 	
-	private MmdVector3[] _position_array;	// 座標配列	
-	private MmdVector3[] _normal_array;		// 法線配列
-	private MmdTexUV[] _texture_uv;		// テクスチャ座標配列
+	private MmdVector3[] _position_array;	// 座標配列/Coordinate array
+	private MmdVector3[] _normal_array;		// 法線配列/Normals array
+	private MmdTexUV[] _texture_uv;		// テクスチャ座標配列/UV texture coordinate array
 	private PmdSkinInfo[] _skin_info_array;
-	private PmdMaterial[] _materials;		// マテリアル配列
+	private PmdMaterial[] _materials;		// マテリアル配列/Material array
 
 	public MmdPmdModel(InputStream i_stream) throws MmdException
 	{
@@ -146,19 +146,19 @@ public class MmdPmdModel
 		PMD_Header pPMDHeader = new PMD_Header();
 		pPMDHeader.read(reader);
 		if(!pPMDHeader.szMagic.equalsIgnoreCase("PMD")){
-			throw new MmdException();
+			throw new MmdException("Header is not \"PMD\"");
 		}		
 
 		this._name=pPMDHeader.szName;
 		
 		// -----------------------------------------------------
-		// 頂点数取得
+		// 頂点数取得/Get the number of vertices
 		this._number_of_vertex=reader.readInt();//
 		if(this._number_of_vertex<0){
-			throw new MmdException();
+			throw new MmdException("Less than zero vertices");
 		}
 		
-		// 頂点配列をコピー
+		// 頂点配列をコピー/Copy the vertex array
 		this._position_array=MmdVector3.createArray(this._number_of_vertex); 
 		this._normal_array=MmdVector3.createArray(this._number_of_vertex);
 		this._texture_uv=MmdTexUV.createArray(this._number_of_vertex);
@@ -178,15 +178,15 @@ public class MmdPmdModel
 			this._skin_info_array[i].unBoneNo[1] = tmp_pmd_vertex.unBoneNo[1]; 
 		}
 		// -----------------------------------------------------
-		// 頂点インデックス数取得
+		// 頂点インデックス数取得/Gets the number of vertex indices
 		short[] indices_array=createIndicesArray(reader);
 
 		
 		// -----------------------------------------------------
-		// マテリアル数取得
+		// マテリアル数取得/Acquisition of materials
 		int number_of_materials=reader.readInt();
 
-		// マテリアル配列をコピー
+		// マテリアル配列をコピー/Array copy material
 		this._materials = new PmdMaterial[number_of_materials];
 
 		PMD_Material tmp_pmd_material=new PMD_Material();
@@ -224,11 +224,11 @@ public class MmdPmdModel
 			}
 		}
 
-		//Boneの読み出し
+		//Boneの読み出し/Reading Bone
 		this.m_pBoneArray=createBoneArray(reader);		
-		//IK配列の読み出し
+		//IK配列の読み出し/IK array read
 		this.m_pIKArray=createIKArray(reader,this.m_pBoneArray);
-		//Face配列の読み出し
+		//Face配列の読み出し/Face array read
 		this.m_pFaceArray=createFaceArray(reader);
 		return;		
 	}
@@ -238,7 +238,7 @@ public class MmdPmdModel
 		short[] result=new short[num_of_indeces];
 		result=new short[num_of_indeces];
 
-		// 頂点インデックス配列をコピー
+		// 頂点インデックス配列をコピー/Vertex index array copy
 		for(int i=0;i<num_of_indeces;i++){
 			result[i]=i_reader.readShort();
 		}
@@ -253,7 +253,7 @@ public class MmdPmdModel
 		for(int i = 0 ; i < number_of_bone ; i++ )
 		{
 			tmp_pmd_bone.read(i_reader);
-			//ボーンの親子関係を一緒に読みだすので。
+			//ボーンの親子関係を一緒に読みだすので。/I read out the bone with a parent-child relationship.
 			result[i]=new PmdBone(tmp_pmd_bone,result);
 		}	
 		for(int i = 0 ; i <number_of_bone ; i++ ){
@@ -267,7 +267,7 @@ public class MmdPmdModel
 		final int number_of_ik = i_reader.readShort();
 		PMD_IK tmp_pmd_ik=new PMD_IK();
 		PmdIK[] result=new PmdIK[number_of_ik];
-		// IK配列を作成
+		// IK配列を作成/Create IK array
 		if(number_of_ik>0)
 		{
 
@@ -287,7 +287,7 @@ public class MmdPmdModel
 		PMD_FACE tmp_pmd_face=new PMD_FACE();
 		PmdFace[] result=new PmdFace[number_of_face];		
 
-		// 表情配列を作成
+		// 表情配列を作成/Create an array expression
 		if(number_of_face>0)
 		{
 

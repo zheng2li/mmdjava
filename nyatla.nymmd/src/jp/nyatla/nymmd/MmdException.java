@@ -54,7 +54,7 @@ public class MmdException extends Exception
 
 	public static void trap(String m) throws MmdException
 	{
-		throw new MmdException("トラップ:" + m);
+		throw new MmdException("トラップ:" + m);//trap... whatever that means...
 	}
 
 	public static void notImplement() throws MmdException

@@ -33,7 +33,13 @@ package jp.nyatla.nymmd;
 
 
 import jp.nyatla.nymmd.types.MmdMatrix;
-
+/**
+ * Encapsulates all rendering systems.
+ * Defines all information required for rendering of model.
+ * Does not include camera/ lighting information
+ * @author nyatla
+ *
+ */
 public interface IMmdPmdRender
 {
 	public void dispose();

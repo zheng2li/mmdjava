@@ -44,7 +44,7 @@ import jp.nyatla.nymmd.struct.vmd.VMD_Motion;
 import jp.nyatla.nymmd.types.*;
 
 //------------------------------
-//ボーンキーフレームソート用比較関数
+//ボーンキーフレームソート用比較関数/For comparing BoneKeyFrames
 //------------------------------
 class BoneCompare implements java.util.Comparator<BoneKeyFrame>
 {
@@ -56,7 +56,7 @@ class BoneCompare implements java.util.Comparator<BoneKeyFrame>
 
 
 //------------------------------
-//表情キーフレームソート用比較関数
+//表情キーフレームソート用比較関数/For Comparing FaceKeyFrames
 //------------------------------
 class FaceCompare implements java.util.Comparator<FaceKeyFrame>
 {
@@ -68,9 +68,9 @@ class FaceCompare implements java.util.Comparator<FaceKeyFrame>
 
 public class MmdVmdMotion
 {
-	private MotionData[] _motion_data_array;	// ボーンごとのキーフレームデータのリスト
-	private FaceData[] _face_data_array;	// 表情ごとのキーフレームデータのリスト
-	private float m_fMaxFrame;		// 最後のフレーム番号
+	private MotionData[] _motion_data_array;	// ボーンごとのキーフレームデータのリスト/Keyframe per Bone array
+	private FaceData[] _face_data_array;	// 表情ごとのキーフレームデータのリスト/Keyframe FaceData Array 
+	private float m_fMaxFrame;		// 最後のフレーム番号/The last frame number
 
 	public MmdVmdMotion(InputStream i_stream) throws MmdException
 	{
@@ -98,19 +98,19 @@ public class MmdVmdMotion
 		
 		DataReader reader=new DataReader(i_st);
 
-		// ヘッダのチェック
+		// ヘッダのチェック/Header check
 		VMD_Header tmp_vmd_header=new VMD_Header();
 		tmp_vmd_header.read(reader);
 		if(!tmp_vmd_header.szHeader.equalsIgnoreCase("Vocaloid Motion Data 0002"))
 		{
-			throw new MmdException();
+			throw new MmdException("Header of VMD not \"Vocaloid Motion Data 0002\"");
 		}
-		//ボーンと最大フレームを取得
+		//ボーンと最大フレームを取得/Get the bones and maximum frame
 		float[] max_frame=new float[1];
 		this._motion_data_array=createMotionDataList(reader,max_frame);
 		this.m_fMaxFrame=max_frame[0];
 		
-		//表情と最大フレームを再取得
+		//表情と最大フレームを再取得/And look to regain the maximum frame
 		this._face_data_array=createFaceDataList(reader,max_frame);
 		this.m_fMaxFrame=this.m_fMaxFrame>max_frame[0]?this.m_fMaxFrame:max_frame[0];
 		
@@ -120,11 +120,11 @@ public class MmdVmdMotion
 	private static FaceData[] createFaceDataList(DataReader i_reader,float[] o_max_frame) throws MmdException
 	{
 		//-----------------------------------------------------
-		// 表情のキーフレーム数を取得
+		// 表情のキーフレーム数を取得/Get the FaceData keyframes
 		Vector<FaceData> result=new Vector<FaceData>();
 		int ulNumFaceKeyFrames=i_reader.readInt();	
 
-		//規定フレーム数分表情を読み込み
+		//規定フレーム数分表情を読み込み/Minutes reading frames look Policies
 		VMD_Face[] tmp_vmd_face=new VMD_Face[ulNumFaceKeyFrames];
 		for(int i=0;i<ulNumFaceKeyFrames;i++){
 			tmp_vmd_face[i]= new VMD_Face();
@@ -134,7 +134,7 @@ public class MmdVmdMotion
 		for(int i = 0 ; i < ulNumFaceKeyFrames ; i++)
 		{
 			if(max_frame < (float)tmp_vmd_face[i].ulFrameNo ){
-				max_frame = (float)tmp_vmd_face[i].ulFrameNo;	// 最大フレーム更新
+				max_frame = (float)tmp_vmd_face[i].ulFrameNo;	// 最大フレーム更新/Update maximum frame
 			}
 			boolean is_found=false;
 			for(int i2=0;i2<result.size();i2++)
@@ -142,7 +142,7 @@ public class MmdVmdMotion
 				final FaceData pFaceTemp = result.get(i2);
 				if(pFaceTemp.szFaceName.equals(tmp_vmd_face[i].szFaceName))
 				{
-					// リストに追加済み
+					// リストに追加済み/Added to the list
 					pFaceTemp.ulNumKeyFrames++;
 					is_found=true;
 					break;
@@ -151,7 +151,7 @@ public class MmdVmdMotion
 
 			if(!is_found)
 			{
-				// リストにない場合は新規ノードを追加
+				// リストにない場合は新規ノードを追加/If you do not add new nodes to the list
 				FaceData pNew = new FaceData();
 				pNew.szFaceName=tmp_vmd_face[i].szFaceName;
 				pNew.ulNumKeyFrames = 1;
@@ -159,15 +159,15 @@ public class MmdVmdMotion
 			}
 		}
 
-		// キーフレーム配列を確保
+		// キーフレーム配列を確保/Secure key frame sequence
 		for(int i=0;i<result.size();i++)
 		{
 			FaceData pFaceTemp=result.get(i);
 			pFaceTemp.pKeyFrames = FaceKeyFrame.createArray(pFaceTemp.ulNumKeyFrames);
-			pFaceTemp.ulNumKeyFrames = 0;		// 配列インデックス用にいったん0にする
+			pFaceTemp.ulNumKeyFrames = 0;		// 配列インデックス用にいったん0にする/Array index to zero
 		}
 		
-		// 表情ごとにキーフレームを格納
+		// 表情ごとにキーフレームを格納/Each keyframe contains FaceData
 		for(int i = 0 ; i < ulNumFaceKeyFrames ; i++)
 		{
 			for(int i2=0;i2<result.size();i2++)
@@ -186,7 +186,7 @@ public class MmdVmdMotion
 			}
 		}
 
-		// キーフレーム配列を昇順にソート
+		// キーフレーム配列を昇順にソート/Sort ascending sequence keyframe
 		for(int i=0;i<result.size();i++)
 		{
 			FaceData pFaceTemp = result.get(i);
@@ -199,10 +199,11 @@ public class MmdVmdMotion
 	{	
 		Vector<MotionData> result=new Vector<MotionData>();
 		// まずはモーションデータ中のボーンごとのキーフレーム数をカウント
+		//Count the number of key frames for each bone in the first motion data
 		final int ulNumBoneKeyFrames=i_reader.readInt();
 
 
-		//ボーンを指定数読み込み
+		//ボーンを指定数読み込み/Specify the number of bone loading
 		VMD_Motion[] tmp_vmd_motion=new VMD_Motion[ulNumBoneKeyFrames];
 		for(int i=0;i<ulNumBoneKeyFrames;i++){
 			tmp_vmd_motion[i]= new VMD_Motion();
@@ -214,7 +215,7 @@ public class MmdVmdMotion
 		for(int i = 0 ; i < ulNumBoneKeyFrames ; i++)
 		{
 			if( max_frame < tmp_vmd_motion[i].ulFrameNo){
-				max_frame = tmp_vmd_motion[i].ulFrameNo;	// 最大フレーム更新
+				max_frame = tmp_vmd_motion[i].ulFrameNo;	// 最大フレーム更新/Update maximum frame
 			}
 			boolean is_found=false;
 			for(int i2=0;i2<result.size();i2++)
@@ -222,7 +223,7 @@ public class MmdVmdMotion
 				final MotionData pMotTemp = result.get(i2);
 				if(pMotTemp.szBoneName.equals(tmp_vmd_motion[i].szBoneName))
 				{
-					// リストに追加済みのボーン
+					// リストに追加済みのボーン/Added to the list of bones
 					pMotTemp.ulNumKeyFrames++;
 					is_found=true;
 					break;
@@ -231,7 +232,7 @@ public class MmdVmdMotion
 			
 			if(!is_found)
 			{
-				// リストにない場合は新規ノードを追加
+				// リストにない場合は新規ノードを追加/If you do not add new nodes to the list
 				MotionData pNew = new MotionData();
 				pNew.szBoneName=tmp_vmd_motion[i].szBoneName;
 				pNew.ulNumKeyFrames = 1;
@@ -240,15 +241,15 @@ public class MmdVmdMotion
 		}
 
 		
-		// キーフレーム配列を確保
+		// キーフレーム配列を確保/Secure key frame sequence
 		for(int i=0;i<result.size();i++)
 		{
 			final MotionData pMotTemp = result.get(i);
 			pMotTemp.pKeyFrames = BoneKeyFrame.createArray(pMotTemp.ulNumKeyFrames);
-			pMotTemp.ulNumKeyFrames = 0;		// 配列インデックス用にいったん0にする
+			pMotTemp.ulNumKeyFrames = 0;		// 配列インデックス用にいったん0にする/Array index to zero
 		}
 		
-		// ボーンごとにキーフレームを格納
+		// ボーンごとにキーフレームを格納/Each keyframe contains bone
 		for(int i = 0 ; i < ulNumBoneKeyFrames ; i++)
 		{
 			for(int i2=0;i2<result.size();i2++)
@@ -269,7 +270,7 @@ public class MmdVmdMotion
 			}
 		}
 
-		// キーフレーム配列を昇順にソート
+		// キーフレーム配列を昇順にソート/Sort ascending sequence keyframe
 
 		for(int i=0;i<result.size();i++)
 		{
