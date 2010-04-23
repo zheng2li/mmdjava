@@ -42,7 +42,7 @@ public class DataReader
 	public DataReader(InputStream i_stream) throws MmdException
 	{
 		try{
-			//コレなんとかしよう。C#のBinaryReaderみたいに振舞うように。
+			//コレなんとかしよう。C#のBinaryReaderみたいに振舞うように。/Based off of BinaryReader from C#
 			int file_len=i_stream.available();
 			if(file_len<1){
 				file_len=2*1024*1024;
@@ -53,7 +53,7 @@ public class DataReader
 			this._buf.order(ByteOrder.LITTLE_ENDIAN);
 			return;
 		}catch(Exception e){
-			throw new MmdException();
+			throw new MmdException(e);
 		}
 	}
 	public int readByte()
@@ -63,7 +63,7 @@ public class DataReader
 	public int read()
 	{
 		int v=this._buf.get();
-		return (v>=0)?v:0xff+v;//unsignedに戻す
+		return (v>=0)?v:0xff+v;//unsignedに戻す/unsigned int
 	}
 	public short readShort()
 	{
@@ -72,7 +72,7 @@ public class DataReader
 	public int readUnsignedShort()
 	{
 		int v=this._buf.getShort();
-		return (v>=0)?v:0xffff+v;//unsignedに戻す
+		return (v>=0)?v:0xffff+v;//unsignedに戻す/unsigned short int
 	}
 	public int readInt()
 	{
@@ -103,13 +103,13 @@ public class DataReader
 			len++;
 		}
 		}catch(Exception e){
-			throw new MmdException();
+			throw new MmdException(e);
 		}
 		try {
-			ret=new String(tmp,0,len,"Shift_JIS");
+			ret=new String(tmp,0,len,"Shift_JIS");//if Japanese is enabled
 		} catch (UnsupportedEncodingException e) {
 			try {
-				ret=new String(tmp,0,len,"US-ASCII");
+				ret=new String(tmp,0,len,"US-ASCII");//otherwise... 
 			} catch (UnsupportedEncodingException e1) {
 				e1.printStackTrace();
 			}

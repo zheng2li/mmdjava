@@ -69,7 +69,7 @@ public class PmdFace
 	public void setFace(MmdVector3[] pvec3Vertices) throws MmdException
 	{
 		if (this._face_vertex == null) {
-			throw new MmdException();
+			throw new MmdException("Face vertex is null");
 		}
 
 		final PMD_FACE_VTX[] vertex_array = this._face_vertex;
@@ -83,7 +83,7 @@ public class PmdFace
 	public void blendFace(MmdVector3[] pvec3Vertices, float fRate) throws MmdException
 	{
 		if (this._face_vertex == null) {
-			throw new MmdException();
+			throw new MmdException("Face Vertex is null");
 		}
 
 		PMD_FACE_VTX[] vertex_array = this._face_vertex;
