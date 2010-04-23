@@ -107,7 +107,7 @@ public class MmdTestLWJGL extends GLApp
 		long iTime = System.currentTimeMillis() - this.animation_start_time;
 		float fDiffTime = (float) (iTime - prev_time) * (1.0f / 30.0f);
 		prev_time = iTime;
-		rotationangle+=Math.PI/150f;
+		rotationangle+=Math.PI/800f;
 		try
 		{
 			this._player.updateMotion(fDiffTime);
@@ -126,12 +126,12 @@ public class MmdTestLWJGL extends GLApp
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glPushMatrix();
 		GL11.glLoadIdentity();
-		GL11.glTranslatef(0, -10, -30);
+		GL11.glTranslatef(0, -10, -50);
 		GL11.glScalef(1.0f, 1.0f, -1.0f);
-
-		GLU.gluLookAt(
-				.5f*(float)(Math.sin(rotationangle*2)),.5f*(float)(Math.cos(rotationangle)),.5f*(float)(Math.cos(rotationangle*2)),//Revolve
-				0,0,0, 0,1,0);// z is up
+		/*GLU.gluLookAt(
+				.3f*(float)(Math.sin(rotationangle)),0,.3f*(float)(Math.cos(rotationangle)),//Revolve
+				0,0,0, 0,1,0);// z is up*/
+		GLU.gluLookAt(0f,0f,0f, 0f,0f,-1f, 0,1,0);// z is up
 		this._render.render();
 		GL11.glPopMatrix();
 		
@@ -181,7 +181,7 @@ public class MmdTestLWJGL extends GLApp
 			input.dispose();return;
 		}
 		*/
-		String pmd_file = "Model/KAITO.pmd";
+		String pmd_file = "Model/Miku_Hatsune.pmd";
 		String vmd_file = "Motion/test.vmd";
 		try
 		{
