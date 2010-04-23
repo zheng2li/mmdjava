@@ -211,7 +211,7 @@ class GLTextureListLWJGL
 		try {
 			img = ImageIO.read(i_st);
 		} catch (Exception e) {
-			throw new MmdException();
+			throw new MmdException(e);
 		}
 		IntBuffer texid = BufferUtils.createIntBuffer(2);
 		GL11.glGenTextures(texid);
