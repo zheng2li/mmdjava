@@ -2,6 +2,7 @@ package jp.nyatla.nymmd.test;
 
 import java.nio.*;
 //import java.awt.Frame;
+import java.awt.*;
 import java.awt.event.ComponentEvent;
 //import java.awt.FileDialog;
 import java.io.*;
@@ -163,7 +164,7 @@ public class MmdTestLWJGL extends GLApp
 	 */
 	public static void main(String[] args)
 	{
-		/*
+		
 		Frame input = new Frame();
 		FileDialog fd;
 		fd=new FileDialog(input, "Select PMD file" , FileDialog.LOAD);
@@ -180,9 +181,9 @@ public class MmdTestLWJGL extends GLApp
 			System.out.println("failed:please select vmd file.");
 			input.dispose();return;
 		}
-		*/
-		String pmd_file = "Model/Miku_Hatsune.pmd";
-		String vmd_file = "Motion/test.vmd";
+		
+		/*String pmd_file = "Model/Miku_Hatsune.pmd";
+		String vmd_file = "Motion/test.vmd";*/
 		try
 		{
 		MmdTestLWJGL demo = new MmdTestLWJGL(new File(pmd_file),new File(vmd_file));
